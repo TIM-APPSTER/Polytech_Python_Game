@@ -14,9 +14,9 @@ def ball_animation():
     if ball.colliderect(player) or ball.colliderect(enemy):
         ball_speed_y *= -1
 
-    if ball.top <= screen_height / 2:
+    if ball.y <= 5:
         player_score += 1
-    else:
+    if ball.y >= 710:
         enemy_score += 1
 
 
