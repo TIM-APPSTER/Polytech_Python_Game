@@ -32,10 +32,6 @@ def enemy_animation():
         enemy.left = 0
     if enemy.right >= screen_width:
         enemy.right = screen_width
-    if enemy.left < ball.x:
-        enemy.left += ball_speed_x
-    if enemy.right > ball.x:
-        enemy.right -= ball_speed_x
 
 
 # pygame setup
@@ -66,10 +62,16 @@ while running:
             running = False
 
     keys = pygame.key.get_pressed()
-    if keys[pygame.K_a] or keys[pygame.K_LEFT]:
+    if keys[pygame.K_a]:
         player.x -= 300 * dt
-    if keys[pygame.K_d] or keys[pygame.K_RIGHT]:
+    if keys[pygame.K_d]:
         player.x += 300 * dt
+
+    keys = pygame.key.get_pressed()
+    if keys[pygame.K_LEFT]:
+        enemy.x -= 300 * dt
+    if keys[pygame.K_RIGHT]:
+        enemy.x += 300 * dt
 
     ball_animation()
     player_animation()
