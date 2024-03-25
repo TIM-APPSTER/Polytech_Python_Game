@@ -3,7 +3,7 @@ import pygame
 
 
 def ball_animation():
-    global ball_speed_x, ball_speed_y
+    global ball_speed_x, ball_speed_y, player_score, enemy_score
     ball.x += ball_speed_x
     ball.y += ball_speed_y
     if ball.top <= 0 or ball.bottom >= screen_height:
@@ -13,6 +13,11 @@ def ball_animation():
 
     if ball.colliderect(player) or ball.colliderect(enemy):
         ball_speed_y *= -1
+
+    if ball.top <= screen_height / 2:
+        player_score += 1
+    else:
+        enemy_score += 1
 
 
 def player_animation():
@@ -50,8 +55,9 @@ bg_color = pygame.Color('grey12')
 
 ball_speed_x = 2
 ball_speed_y = 2
-player_speed = 0
-enemy_speed = 7
+player_score = 0
+enemy_score = 0
+
 while running:
     # poll for events
     # pygame.QUIT event means the user clicked X to close your window
@@ -60,9 +66,9 @@ while running:
             running = False
 
     keys = pygame.key.get_pressed()
-    if keys[pygame.K_a]:
+    if keys[pygame.K_a] or keys[pygame.K_LEFT]:
         player.x -= 300 * dt
-    if keys[pygame.K_d]:
+    if keys[pygame.K_d] or keys[pygame.K_RIGHT]:
         player.x += 300 * dt
 
     ball_animation()
@@ -75,6 +81,9 @@ while running:
     pygame.draw.ellipse(screen, 'gray', ball)
     pygame.draw.rect(screen, 'gray', enemy)
     pygame.draw.aaline(screen, 'gray', (screen_height, screen_height / 2), (0, screen_height / 2))
+    screen.blit(
+        pygame.font.SysFont('arial', 30, bold=True).render(f'score: {player_score} - {enemy_score}', True, 'white'),
+        (screen_width / 2 - 50, screen_height / 2))
 
     # flip() the display to put your work on screen
     pygame.display.flip()
