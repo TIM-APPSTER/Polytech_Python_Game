@@ -1,23 +1,40 @@
-# Example file showing a basic pygame "game loop"
+import random
 import pygame
 
 
 def ball_animation():
     global ball_speed_x, ball_speed_y, player_score, enemy_score
+
     ball.x += ball_speed_x
     ball.y += ball_speed_y
     if ball.top <= 0 or ball.bottom >= screen_height:
-        ball_speed_y *= -1
+        if ball.y <= 0.5:
+            player_score += 1
+            pygame.mixer.music.load("Materials/ping_pong_8bit_peeeeeep.ogg")
+            pygame.mixer.music.play()
+            ball_restart()
+        if ball.y >= 710:
+            enemy_score += 1
+            pygame.mixer.music.load("Materials/ping_pong_8bit_peeeeeep.ogg")
+            pygame.mixer.music.play()
+            ball_restart()
+
     if ball.left <= 0 or ball.right >= screen_width:
+        pygame.mixer.music.load("Materials/ping_pong_8bit_plop.ogg")
+        pygame.mixer.music.play()
         ball_speed_x *= -1
 
     if ball.colliderect(player) or ball.colliderect(enemy):
+        pygame.mixer.music.load("Materials/ping_pong_8bit_beeep.ogg")
+        pygame.mixer.music.play()
         ball_speed_y *= -1
 
-    if ball.y <= 0.5:
-        player_score += 1
-    if ball.y >= 710:
-        enemy_score += 1
+
+def ball_restart():
+    global ball_speed_y, ball_speed_x
+    ball.center = (screen_width / 2, screen_height / 2)
+    ball_speed_y *= random.choice((1, -1))
+    ball_speed_x *= random.choice((1, -1))
 
 
 def player_animation():
@@ -34,7 +51,6 @@ def enemy_animation():
         enemy.right = screen_width
 
 
-# pygame setup
 pygame.init()
 screen_width = 720
 screen_height = 720
@@ -55,8 +71,7 @@ player_score = 0
 enemy_score = 0
 
 while running:
-    # poll for events
-    # pygame.QUIT event means the user clicked X to close your window
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
@@ -77,7 +92,6 @@ while running:
     player_animation()
     enemy_animation()
 
-    # fill the screen with a color to wipe away anything from last frame
     screen.fill(bg_color)
     pygame.draw.rect(screen, 'gray', player)
     pygame.draw.ellipse(screen, 'gray', ball)
@@ -87,7 +101,6 @@ while running:
         pygame.font.SysFont('arial', 30, bold=True).render(f'score: {player_score} - {enemy_score}', True, 'white'),
         (screen_width / 2 - 50, screen_height / 2))
 
-    # flip() the display to put your work on screen
     pygame.display.flip()
 
     dt = clock.tick(120) / 700
