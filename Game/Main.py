@@ -45,22 +45,26 @@ def ball_animation():
     if ball.top <= 0 or ball.bottom >= SCREEN_HEIGHT:
         if ball.y <= 0.5:
             player_score += 1
-            pygame.mixer.music.load(r"C:\MAIN_FOLDER\Daniel_Polyshit\Polytech_Python_Game\Game\Materials\ping_pong_8bit_peeeeeep.ogg")
+            pygame.mixer.music.load(
+                r"C:\MAIN_FOLDER\Daniel_Polyshit\Polytech_Python_Game\Game\Materials\ping_pong_8bit_peeeeeep.ogg")
             pygame.mixer.music.play()
             ball_restart()
         if ball.y >= 710:
             enemy_score += 1
-            pygame.mixer.music.load(r"C:\MAIN_FOLDER\Daniel_Polyshit\Polytech_Python_Game\Game\Materials\ping_pong_8bit_peeeeeep.ogg")
+            pygame.mixer.music.load(
+                r"C:\MAIN_FOLDER\Daniel_Polyshit\Polytech_Python_Game\Game\Materials\ping_pong_8bit_peeeeeep.ogg")
             pygame.mixer.music.play()
             ball_restart()
 
     if ball.left <= 0 or ball.right >= SCREEN_WIDTH:
-        pygame.mixer.music.load(r"C:\MAIN_FOLDER\Daniel_Polyshit\Polytech_Python_Game\Game\Materials\ping_pong_8bit_plop.ogg")
+        pygame.mixer.music.load(
+            r"C:\MAIN_FOLDER\Daniel_Polyshit\Polytech_Python_Game\Game\Materials\ping_pong_8bit_plop.ogg")
         pygame.mixer.music.play()
         BALL_SPEED_X *= -1
 
     if ball.colliderect(player) or ball.colliderect(enemy):
-        pygame.mixer.music.load(r"C:\MAIN_FOLDER\Daniel_Polyshit\Polytech_Python_Game\Game\Materials\ping_pong_8bit_beeep.ogg")
+        pygame.mixer.music.load(
+            r"C:\MAIN_FOLDER\Daniel_Polyshit\Polytech_Python_Game\Game\Materials\ping_pong_8bit_beeep.ogg")
         pygame.mixer.music.play()
         BALL_SPEED_Y *= -1
 
