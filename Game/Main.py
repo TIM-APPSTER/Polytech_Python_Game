@@ -1,4 +1,6 @@
+import os
 import random
+import sys
 
 import pygame
 
@@ -24,6 +26,17 @@ enemy = pygame.Rect(SCREEN_WIDTH / 2 - 25, 25, 50, 5)
 bg_color = pygame.Color('grey12')
 
 
+def resource_path(relative_path):
+    """ Get absolute path to resource, works for dev and for PyInstaller """
+    try:
+        # PyInstaller creates a temp folder and stores path in _MEIPASS
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)
+
+
 def ball_animation():
     global BALL_SPEED_X, BALL_SPEED_Y, player_score, enemy_score
 
@@ -32,22 +45,22 @@ def ball_animation():
     if ball.top <= 0 or ball.bottom >= SCREEN_HEIGHT:
         if ball.y <= 0.5:
             player_score += 1
-            pygame.mixer.music.load("Materials/ping_pong_8bit_peeeeeep.ogg")
+            pygame.mixer.music.load(r"C:\MAIN_FOLDER\Daniel_Polyshit\Polytech_Python_Game\Game\Materials\ping_pong_8bit_peeeeeep.ogg")
             pygame.mixer.music.play()
             ball_restart()
         if ball.y >= 710:
             enemy_score += 1
-            pygame.mixer.music.load("Materials/ping_pong_8bit_peeeeeep.ogg")
+            pygame.mixer.music.load(r"C:\MAIN_FOLDER\Daniel_Polyshit\Polytech_Python_Game\Game\Materials\ping_pong_8bit_peeeeeep.ogg")
             pygame.mixer.music.play()
             ball_restart()
 
     if ball.left <= 0 or ball.right >= SCREEN_WIDTH:
-        pygame.mixer.music.load("Materials/ping_pong_8bit_plop.ogg")
+        pygame.mixer.music.load(r"C:\MAIN_FOLDER\Daniel_Polyshit\Polytech_Python_Game\Game\Materials\ping_pong_8bit_plop.ogg")
         pygame.mixer.music.play()
         BALL_SPEED_X *= -1
 
     if ball.colliderect(player) or ball.colliderect(enemy):
-        pygame.mixer.music.load("Materials/ping_pong_8bit_beeep.ogg")
+        pygame.mixer.music.load(r"C:\MAIN_FOLDER\Daniel_Polyshit\Polytech_Python_Game\Game\Materials\ping_pong_8bit_beeep.ogg")
         pygame.mixer.music.play()
         BALL_SPEED_Y *= -1
 
