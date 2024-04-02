@@ -57,3 +57,15 @@ class Ball(pygame.Rect):
 
     def draw(self):
         pygame.draw.ellipse(self.screen, 'gray', self)
+
+
+def draw_dotted_line(surface, color, start_pos, end_pos, segment_length=5, spacing=10):
+    x1, y1 = start_pos
+    x2, y2 = end_pos
+    dx, dy = x2 - x1, y2 - y1  # Calculate direction vector
+    distance = max(abs(dx), abs(dy))  # Approximate distance
+
+    for i in range(0, distance, segment_length + spacing):
+        if i < distance:  # Check if within visible segment range
+            x, y = x1 + (dx * i) / distance, y1 + (dy * i) / distance
+            pygame.draw.line(surface, color, (x, y), (x + segment_length, y + segment_length), 1)
