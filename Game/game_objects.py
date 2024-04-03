@@ -12,7 +12,7 @@ class Racket(pygame.Rect):
         self.right_key = right_key
         self.speed = 1
         self.dt = 5
-        self.player_score = 0
+        self.score = 0
         self.screen = screen
 
     def moving(self):
@@ -30,6 +30,13 @@ class Racket(pygame.Rect):
     def draw(self):
         pygame.draw.rect(self.screen, 'gray', self)
 
+    def draw_score(self, x, y):
+        font = pygame.font.Font(None, 50)
+        text = font.render(f"{self.score}", True, (255, 255, 255))
+        text_rect = text.get_rect()
+        text_rect.center = (x, y)
+        self.screen.blit(text, text_rect)
+
 
 class Ball(pygame.Rect):
     def __init__(self, screen, speed):
@@ -46,7 +53,7 @@ class Ball(pygame.Rect):
         self.x += self.x_speed
         self.y += self.y_speed
 
-        if self.top <= 0 or self.bottom >= constants.SCREEN_HEIGHT:
+        if self.top <= -10 or self.bottom >= constants.SCREEN_HEIGHT + 10:
             self.restart()
         if self.left <= 0 or self.right >= constants.SCREEN_WIDTH:
             self.x_speed *= -1
@@ -54,21 +61,33 @@ class Ball(pygame.Rect):
     def restart(self):
         self.x = self.x_spawn
         self.y = self.y_spawn
+        self.countdown(['1', '2', '3'])
+
+    def countdown(self, countdown_numbers):
+        countdown_numbers = [3, 2, 1]
+        font = pygame.font.Font(None, 200)  # Use default font, size 500
+        x = constants.SCREEN_WIDTH / 2
+        y = constants.SCREEN_HEIGHT / 2
+
+        for number in countdown_numbers:
+            # Create a semi-transparent surface for the text
+            countdown_text = font.render(str(number), True, (255, 255, 255))  # White text
+            text_surface = pygame.Surface(countdown_text.get_size(), pygame.SRCALPHA)
+            text_surface.blit(countdown_text, (0, 0))
+            text_surface.set_alpha(128)  # Set alpha to 128 (half-transparent)
+
+            # Get text rectangle for positioning
+            countdown_rect = text_surface.get_rect()
+            countdown_rect.center = (x, y)
+
+            self.screen.fill('black')
+
+            pygame.display.update(self.screen.blit(text_surface, countdown_rect))
+
+            pygame.time.wait(1000)
 
     def draw(self):
         pygame.draw.ellipse(self.screen, 'gray', self)
-
-
-class DrawScore:
-    def __init__(self, screen, font_path, font_size, color=(255, 255, 255)):
-        self.screen = screen
-        self.font = pygame.font.Font(font_path, font_size)
-        self.color = color
-
-    def draw(self, score, x, y):
-        score_text = self.font.render(str(score), True, self.color)
-        score_rect = score_text.get_rect(topleft=(x, y))
-        self.screen.blit(score_text, score_rect)
 
 
 def draw_dotted_line(screen, line_color):
