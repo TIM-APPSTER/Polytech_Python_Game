@@ -59,13 +59,21 @@ class Ball(pygame.Rect):
         pygame.draw.ellipse(self.screen, 'gray', self)
 
 
-def draw_dotted_line(surface, color, start_pos, end_pos, segment_length=5, spacing=10):
-    x1, y1 = start_pos
-    x2, y2 = end_pos
-    dx, dy = x2 - x1, y2 - y1  # Calculate direction vector
-    distance = max(abs(dx), abs(dy))  # Approximate distance
+class DrawScore:
+    def __init__(self, screen, font_path, font_size, color=(255, 255, 255)):
+        self.screen = screen
+        self.font = pygame.font.Font(font_path, font_size)
+        self.color = color
 
-    for i in range(0, distance, segment_length + spacing):
-        if i < distance:  # Check if within visible segment range
-            x, y = x1 + (dx * i) / distance, y1 + (dy * i) / distance
-            pygame.draw.line(surface, color, (x, y), (x + segment_length, y + segment_length), 1)
+    def draw(self, score, x, y):
+        score_text = self.font.render(str(score), True, self.color)
+        score_rect = score_text.get_rect(topleft=(x, y))
+        self.screen.blit(score_text, score_rect)
+
+
+def draw_dotted_line(screen, line_color):
+    start_x, start_y = (0, constants.SCREEN_HEIGHT / 2)
+    segment_length = 5
+    spacing = 10
+    for x in range(start_x, constants.SCREEN_WIDTH, segment_length + spacing):
+        pygame.draw.line(screen, line_color, (x, start_y), (x + segment_length, start_y), 2)
