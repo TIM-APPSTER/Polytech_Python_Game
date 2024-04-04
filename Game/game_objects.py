@@ -53,7 +53,7 @@ class Ball(pygame.Rect):
         self.x += self.x_speed
         self.y += self.y_speed
 
-        if self.top <= -10 or self.bottom >= constants.SCREEN_HEIGHT + 10:
+        if self.top <= -15 or self.bottom >= constants.SCREEN_HEIGHT + 20:
             self.restart()
         if self.left <= 0 or self.right >= constants.SCREEN_WIDTH:
             self.x_speed *= -1
@@ -61,9 +61,9 @@ class Ball(pygame.Rect):
     def restart(self):
         self.x = self.x_spawn
         self.y = self.y_spawn
-        self.countdown(['1', '2', '3'])
+        self.countdown()
 
-    def countdown(self, countdown_numbers):
+    def countdown(self):
         countdown_numbers = [3, 2, 1]
         font = pygame.font.Font(None, 200)  # Use default font, size 500
         x = constants.SCREEN_WIDTH / 2

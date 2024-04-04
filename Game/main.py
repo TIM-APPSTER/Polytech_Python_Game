@@ -39,9 +39,9 @@ while True:
 
     collisions_detection(first_player_racket, second_player_racket, ball)
 
-    if ball.top <= -5:
+    if ball.top <= -12:
         first_player_racket.score += 1
-    elif ball.bottom >= constants.SCREEN_HEIGHT + 5:
+    elif ball.bottom >= constants.SCREEN_HEIGHT + 15:
         second_player_racket.score += 1
 
     first_player_racket.draw_score(constants.SCREEN_WIDTH / 2, constants.SCREEN_HEIGHT / 2 + 50)
