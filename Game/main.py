@@ -3,6 +3,7 @@ import pygame
 import constants
 from game_logic import collisions_detection
 from game_objects import Racket, Ball, draw_dotted_line
+from menu import Menu
 
 pygame.init()
 clock = pygame.time.Clock()
@@ -18,12 +19,28 @@ second_player_racket = Racket(screen, constants.SECOND_PLAYER_COORDINATE[0], con
                               pygame.K_LEFT,
                               pygame.K_RIGHT)
 
-ball = Ball(screen, 4)
+ball = Ball(screen)
+is_pause = False
 
-while True:
+menu = Menu(screen, lambda: set_pause_state(False))
+
+
+def set_pause_state(is_pause_on):
+    global is_pause
+    is_pause = is_pause_on
+
+
+while not is_pause:
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             quit()
+
+    for keys in pygame.key.get_pressed():
+        if keys == pygame.K_ESCAPE:
+            menu.is_show = True
+        else:
+            menu.is_show = False
 
     screen.fill(constants.SCREEN_COLOR)
     draw_dotted_line(screen, 'white')
@@ -47,4 +64,11 @@ while True:
     first_player_racket.draw_score(constants.SCREEN_WIDTH / 2, constants.SCREEN_HEIGHT / 2 + 50)
     second_player_racket.draw_score(constants.SCREEN_WIDTH / 2, constants.SCREEN_HEIGHT / 2 - 50)
     pygame.display.update()
+
+    if menu.is_show:
+        print("is pause =", is_pause)
+        set_pause_state(True)
+        print("is pause =", is_pause)
+        menu.show_menu()
+
     clock.tick(constants.FPS)

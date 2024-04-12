@@ -10,7 +10,7 @@ class Racket(pygame.Rect):
         self.y_spawn = y
         self.left_key = left_key
         self.right_key = right_key
-        self.speed = 1
+        self.speed = constants.RACKET_SPEED
         self.dt = 5
         self.score = 0
         self.screen = screen
@@ -39,13 +39,13 @@ class Racket(pygame.Rect):
 
 
 class Ball(pygame.Rect):
-    def __init__(self, screen, speed):
+    def __init__(self, screen):
         self.x_spawn = constants.SCREEN_WIDTH / 2
         self.y_spawn = constants.SCREEN_HEIGHT / 2
         super().__init__(self.x_spawn, self.y_spawn, 10, 10)
         self.radius = 5
-        self.x_speed = speed
-        self.y_speed = speed
+        self.x_speed = constants.BALL_SPEED
+        self.y_speed = constants.BALL_SPEED
         self.dt = 5
         self.screen = screen
 
