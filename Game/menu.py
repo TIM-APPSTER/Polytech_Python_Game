@@ -4,55 +4,41 @@ import constants
 
 
 class Menu:
-    def __init__(self, screen, exit_callback):
+    def __init__(self, screen):
         self.screen = screen
-        self.screen_rect = screen.get_rect()
         self.is_show = True
-        self.play_button = PlayButton(constants.SCREEN_WIDTH / 2, 100, 20, 20, 'Play', 'black', 'white')
-        self.exit_button = ExitButton(constants.SCREEN_WIDTH / 2, 200, 20, 20, 'Exit', 'black', 'white')
-        self.on_exit = exit_callback
+        self.play_button = Button(self.screen, 'Play', 300, 150, 100, 100, 'white', 'black', None)
+        self.exit_button = Button(self.screen, 'Exit', 300, 300, 200, 200, 'white', 'black', None)
+        self.screen_surf = pygame.Surface((constants.SCREEN_WIDTH, constants.SCREEN_HEIGHT))
         self.show_menu()
 
     def show_menu(self):
-        print("show menu =", self.is_show)
-        if self.is_show:
-            self.screen.fill((0, 0, 0))
-            self.play_button.draw(self.screen)
-            self.exit_button.draw(self.screen)
-            pygame.display.update()
+        self.screen_surf.fill('black')
+        self.screen_surf.set_alpha(150)
+        self.screen.blit(self.screen_surf, (0, 0))
+        self.play_button.draw_button()
+        self.exit_button.draw_button()
+        for event in pygame.event.get():
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if self.play_button.collidepoint(event.pos):
+                    self.is_show = False
+
+                if self.exit_button.collidepoint(event.pos):
+                    exit()
+        pygame.display.flip()
 
 
-class PlayButton:
-    def __init__(self, x, y, width, height, text, color, text_color):
-        self.rect = pygame.Rect(x, y, width, height)
-        self.text = text
-        self.color = color
-        self.text_color = text_color
-        self.font = pygame.font.Font(None, 100)  # Choose font
+class Button(pygame.Rect):
+    def __init__(self, screen, text, x, y, width, height, color, hover_color, font):
+        super().__init__(x,y, width, height)
+        self.screen = screen
+        self.button_text = text
+        self.text_color = color
+        self.hover_color = hover_color
+        self.font = pygame.font.Font('Materials/Roboto-Black.ttf', 36)
 
-    def draw(self, screen):
-        pygame.draw.rect(screen, self.color, self.rect)
-        text_surface = self.font.render(self.text, True, self.text_color)
-        text_rect = text_surface.get_rect(center=self.rect.center)
-        screen.blit(text_surface, text_rect)
-
-    def is_clicked(self, mouse_pos):
-        return self.rect.collidepoint(mouse_pos)
-
-
-class ExitButton:
-    def __init__(self, x, y, width, height, text, color, text_color):
-        self.rect = pygame.Rect(x, y, width, height)
-        self.text = text
-        self.color = color
-        self.text_color = text_color
-        self.font = pygame.font.Font(None, 100)  # Choose font
-
-    def draw(self, screen):
-        pygame.draw.rect(screen, self.color, self.rect)
-        text_surface = self.font.render(self.text, True, self.text_color)
-        text_rect = text_surface.get_rect(center=self.rect.center)
-        screen.blit(text_surface, text_rect)
-
-    def is_clicked(self, mouse_pos):
-        return self.rect.collidepoint(mouse_pos)
+    def draw_button(self):
+        pygame.draw.rect(self.screen, self.hover_color, self)
+        text_surface = self.font.render(self.button_text, True, self.text_color)
+        text_rect = text_surface.get_rect(center=self.center)
+        self.screen.blit(text_surface, text_rect)

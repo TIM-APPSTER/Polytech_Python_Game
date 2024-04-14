@@ -22,53 +22,39 @@ second_player_racket = Racket(screen, constants.SECOND_PLAYER_COORDINATE[0], con
 ball = Ball(screen)
 is_pause = False
 
-menu = Menu(screen, lambda: set_pause_state(False))
+menu = Menu(screen)
 
-
-def set_pause_state(is_pause_on):
-    global is_pause
-    is_pause = is_pause_on
-
-
-while not is_pause:
-
+while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             quit()
-
-    for keys in pygame.key.get_pressed():
-        if keys == pygame.K_ESCAPE:
-            menu.is_show = True
-        else:
-            menu.is_show = False
-
-    screen.fill(constants.SCREEN_COLOR)
-    draw_dotted_line(screen, 'white')
-
-    first_player_racket.draw()
-    first_player_racket.moving()
-
-    second_player_racket.draw()
-    second_player_racket.moving()
-
-    ball.draw()
-    ball.moving()
-
-    collisions_detection(first_player_racket, second_player_racket, ball)
-
-    if ball.top <= -12:
-        first_player_racket.score += 1
-    elif ball.bottom >= constants.SCREEN_HEIGHT + 15:
-        second_player_racket.score += 1
-
-    first_player_racket.draw_score(constants.SCREEN_WIDTH / 2, constants.SCREEN_HEIGHT / 2 + 50)
-    second_player_racket.draw_score(constants.SCREEN_WIDTH / 2, constants.SCREEN_HEIGHT / 2 - 50)
-    pygame.display.update()
-
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_ESCAPE:
+                menu.is_show = True
     if menu.is_show:
-        print("is pause =", is_pause)
-        set_pause_state(True)
-        print("is pause =", is_pause)
         menu.show_menu()
+    else:
+        screen.fill(constants.SCREEN_COLOR)
+        draw_dotted_line(screen, 'white')
+
+        first_player_racket.draw()
+        first_player_racket.moving()
+
+        second_player_racket.draw()
+        second_player_racket.moving()
+
+        ball.draw()
+        ball.moving()
+
+        collisions_detection(first_player_racket, second_player_racket, ball)
+
+        if ball.top <= -12:
+            first_player_racket.score += 1
+        elif ball.bottom >= constants.SCREEN_HEIGHT + 15:
+            second_player_racket.score += 1
+
+        first_player_racket.draw_score(constants.SCREEN_WIDTH / 2, constants.SCREEN_HEIGHT / 2 + 50)
+        second_player_racket.draw_score(constants.SCREEN_WIDTH / 2, constants.SCREEN_HEIGHT / 2 - 50)
+        pygame.display.update()
 
     clock.tick(constants.FPS)
