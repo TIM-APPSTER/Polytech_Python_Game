@@ -7,8 +7,8 @@ class Menu:
     def __init__(self, screen):
         self.screen = screen
         self.is_show = True
-        self.play_button = Button(self.screen, 'Play', 300, 150, 100, 100, 'white', 'black', None)
-        self.exit_button = Button(self.screen, 'Exit', 300, 300, 200, 200, 'white', 'black', None)
+        self.play_button = Button(self.screen, 'Play', constants.SCREEN_WIDTH / 2, 150, 100, 100, 'gray', 'white')
+        self.exit_button = Button(self.screen, 'Exit', constants.SCREEN_WIDTH / 2, 300, 200, 200, 'gray', 'white')
         self.screen_surf = pygame.Surface((constants.SCREEN_WIDTH, constants.SCREEN_HEIGHT))
         self.show_menu()
 
@@ -18,19 +18,23 @@ class Menu:
         self.screen.blit(self.screen_surf, (0, 0))
         self.play_button.draw_button()
         self.exit_button.draw_button()
-        for event in pygame.event.get():
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if self.play_button.collidepoint(event.pos):
-                    self.is_show = False
+        while self.is_show:
+            for event in pygame.event.get():
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if self.play_button.collidepoint(event.pos):
+                        self.is_show = False
 
-                if self.exit_button.collidepoint(event.pos):
-                    exit()
-        pygame.display.flip()
+                    if self.exit_button.collidepoint(event.pos):
+                        exit()
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_ESCAPE:
+                        self.is_show = False
+            pygame.display.flip()
 
 
 class Button(pygame.Rect):
-    def __init__(self, screen, text, x, y, width, height, color, hover_color, font):
-        super().__init__(x,y, width, height)
+    def __init__(self, screen, text, x, y, width, height, color, hover_color):
+        super().__init__(x, y, width, height)
         self.screen = screen
         self.button_text = text
         self.text_color = color
