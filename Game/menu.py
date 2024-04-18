@@ -23,12 +23,14 @@ class Menu:
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if self.play_button.collidepoint(event.pos):
                         self.is_show = False
-
                     if self.exit_button.collidepoint(event.pos):
                         exit()
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
                         self.is_show = False
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_LALT and event.key == pygame.K_F4:
+                        exit()
             pygame.display.flip()
 
 
@@ -39,7 +41,7 @@ class Button(pygame.Rect):
         self.button_text = text
         self.text_color = color
         self.hover_color = hover_color
-        self.font = pygame.font.Font('Materials/Roboto-Black.ttf', 36)
+        self.font = pygame.font.Font('Game/Materials/Roboto-Black.ttf', 36)
 
     def draw_button(self):
         pygame.draw.rect(self.screen, self.hover_color, self)

@@ -1,3 +1,5 @@
+import threading
+
 import pygame
 
 import constants
@@ -83,8 +85,7 @@ class Ball(pygame.Rect):
             self.screen.fill('black')
 
             pygame.display.update(self.screen.blit(text_surface, countdown_rect))
-
-            pygame.time.wait(1000)
+            threading.Timer(3, None).start()
 
     def draw(self):
         pygame.draw.ellipse(self.screen, 'gray', self)
