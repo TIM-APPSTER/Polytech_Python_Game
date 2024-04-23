@@ -1,6 +1,3 @@
-import time
-import random
-
 import pygame
 
 import constants
@@ -51,7 +48,6 @@ class Ball(pygame.Rect):
         self.y_speed = constants.BALL_SPEED
         self.dt = 5
         self.screen = screen
-        self.score_time = True
 
     def moving(self):
         self.x += self.x_speed
@@ -63,29 +59,12 @@ class Ball(pygame.Rect):
             self.x_speed *= -1
 
     def restart(self):
+        self.x = constants.SCREEN_WIDTH / 2
+        self.y = constants.SCREEN_HEIGHT / 2
         self.countdown()
 
     def countdown(self):
-        basic_font = pygame.font.Font('Materials/Roboto-Light.ttf', 32)
-        self.center = (constants.SCREEN_WIDTH / 2, constants.SCREEN_HEIGHT / 2)
-        current_time = pygame.time.get_ticks()
-
-        if current_time - self.score_time < 700:
-            number_three = basic_font.render("3", False, 'white')
-            self.screen.blit(number_three, (constants.SCREEN_WIDTH / 2 - 10,  constants.SCREEN_HEIGHT / 2 + 20))
-        if 700 < current_time - self.score_time < 1400:
-            number_two = basic_font.render("2", False, 'white')
-            self.screen.blit(number_two, (constants.SCREEN_WIDTH / 2 - 10,  constants.SCREEN_HEIGHT / 2 + 20))
-        if 1400 < current_time - self.score_time < 2100:
-            number_one = basic_font.render("1", False, 'white')
-            self.screen.blit(number_one, (constants.SCREEN_WIDTH / 2 - 10,  constants.SCREEN_HEIGHT / 2 + 20))
-
-        if current_time - self.score_time < 2100:
-            self.y_speed, self.x_speed = 0, 0
-        else:
-            self.x_speed = 7 * random.choice((1, -1))
-            self.y_speed = 7 * random.choice((1, -1))
-            self.score_time = None
+        pass
 
     def draw(self):
         pygame.draw.ellipse(self.screen, 'gray', self)
