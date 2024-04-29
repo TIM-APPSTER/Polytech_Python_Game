@@ -2,7 +2,7 @@ import pygame
 
 import constants
 from game_logic import collisions_detection
-from game_objects import Racket, Ball, draw_dotted_line
+from game_objects import Racket, Ball, draw_dotted_line, print_countdown
 from menu import Menu
 
 pygame.init()
@@ -20,33 +20,11 @@ second_player_racket = Racket(screen, constants.SECOND_PLAYER_COORDINATE[0], con
                               pygame.K_RIGHT)
 
 ball = Ball(screen)
-is_pause = False
 
+is_pause = False
 menu = Menu(screen)
 
 count_flag = False
-basic_font = pygame.font.SysFont('Materials/Roboto-Light.ttf', 200)
-num = 3
-
-
-def print_countdown(score_time):
-    current_time = pygame.time.get_ticks()
-    time_elapsed = current_time - score_time
-
-    if time_elapsed < 700:
-        number = 3
-    elif time_elapsed < 1400:
-        number = 2
-    elif time_elapsed < 2100:
-        number = 1
-    else:
-        return  # Countdown finished
-
-    countdown_text = basic_font.render(str(number), False, 'white', 'black')
-    text_rect = countdown_text.get_rect()
-    text_rect.center = (constants.SCREEN_WIDTH / 2, constants.SCREEN_HEIGHT / 2)
-    screen.blit(countdown_text, text_rect)
-
 
 while True:
     for event in pygame.event.get():
@@ -74,11 +52,11 @@ while True:
 
         if ball.top <= -12:
             count_flag = True
-            score_time = pygame.time.get_ticks()
+            start_time = pygame.time.get_ticks()
             first_player_racket.score += 1
         elif ball.bottom >= constants.SCREEN_HEIGHT + 15:
             count_flag = True
-            score_time = pygame.time.get_ticks()
+            start_time = pygame.time.get_ticks()
             second_player_racket.score += 1
 
         first_player_racket.draw_score(constants.SCREEN_WIDTH / 2, constants.SCREEN_HEIGHT / 2 + 50)
@@ -88,8 +66,8 @@ while True:
             current_time = pygame.time.get_ticks()
             ball.x = constants.SCREEN_WIDTH / 2
             ball.y = constants.SCREEN_HEIGHT / 2
-            print_countdown(score_time)  # Pass score_time to the function
-            if current_time - score_time >= 2100:
+            print_countdown(screen, start_time)  # Pass score_time to the function
+            if current_time - start_time >= 2100:
                 count_flag = False  # Reset count_flag when countdown is done
         pygame.display.update()
 
