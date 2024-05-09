@@ -21,8 +21,8 @@ second_player_racket = Racket(screen, constants.SECOND_PLAYER_COORDINATE[0], con
                               pygame.K_RIGHT)
 
 ball = Ball(screen)
-is_pause = False
 
+is_pause = False
 menu = Menu(screen)
 
 count_flag = False
@@ -53,11 +53,11 @@ while True:
 
         if ball.top <= -12:
             count_flag = True
-            score_time = pygame.time.get_ticks()
+            start_time = pygame.time.get_ticks()
             first_player_racket.score += 1
         elif ball.bottom >= constants.SCREEN_HEIGHT + 15:
             count_flag = True
-            score_time = pygame.time.get_ticks()
+            start_time = pygame.time.get_ticks()
             second_player_racket.score += 1
 
         first_player_racket.draw_score(constants.SCREEN_WIDTH / 2, constants.SCREEN_HEIGHT / 2 + 50)

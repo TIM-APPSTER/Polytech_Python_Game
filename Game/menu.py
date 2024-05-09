@@ -7,8 +7,8 @@ class Menu:
     def __init__(self, screen):
         self.screen = screen
         self.is_show = True
-        self.play_button = Button(self.screen, 'Play', constants.SCREEN_WIDTH / 2, 150, 100, 100, 'gray', 'white')
-        self.exit_button = Button(self.screen, 'Exit', constants.SCREEN_WIDTH / 2, 300, 200, 200, 'gray', 'white')
+        self.play_button = Button(self.screen, 'Play', constants.SCREEN_WIDTH / 2, 150, 100, 100, 'white', 'right')
+        self.exit_button = Button(self.screen, 'Exit', constants.SCREEN_WIDTH / 2, 300, 200, 200, 'white', 'center')
         self.screen_surf = pygame.Surface((constants.SCREEN_WIDTH, constants.SCREEN_HEIGHT))
         self.show_menu()
 
@@ -35,7 +35,7 @@ class Menu:
 
 
 class Button(pygame.Rect):
-    def __init__(self, screen, text, x, y, width, height, color, hover_color):
+    def __init__(self, screen, text, x, y, width, height, color, placement):
         super().__init__(x, y, width, height)
         self.screen = screen
         self.button_text = text
@@ -44,7 +44,13 @@ class Button(pygame.Rect):
         self.font = pygame.font.Font('Game/Materials/fonts/Roboto-Black.ttf', 36)
 
     def draw_button(self):
-        pygame.draw.rect(self.screen, self.hover_color, self)
+        # pygame.draw.rect(self.screen, self.text_color, self)
         text_surface = self.font.render(self.button_text, True, self.text_color)
-        text_rect = text_surface.get_rect(center=self.center)
+        text_rect = text_surface.get_rect()
+        if self.placement == 'center':
+            text_rect.center = self.center
+        elif self.placement == 'left':
+            text_rect.midleft = self.midleft
+        elif self.placement == 'right':
+            text_rect.midright = self.midright
         self.screen.blit(text_surface, text_rect)
