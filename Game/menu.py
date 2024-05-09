@@ -41,7 +41,7 @@ class Button(pygame.Rect):
         self.button_text = text
         self.text_color = color
         self.hover_color = hover_color
-        self.font = pygame.font.Font('Game/Materials/Roboto-Black.ttf', 36)
+        self.font = pygame.font.Font('Game/Materials/fonts/Roboto-Black.ttf', 36)
 
     def draw_button(self):
         pygame.draw.rect(self.screen, self.hover_color, self)
