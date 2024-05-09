@@ -2,10 +2,11 @@ import pygame
 
 import constants
 from game_logic import collisions_detection
-from game_objects import Racket, Ball, draw_dotted_line, print_countdown
+from game_objects import Racket, Ball, draw_dotted_line, draw_countdown
 from menu import Menu
 
 pygame.init()
+
 clock = pygame.time.Clock()
 
 screen = pygame.display.set_mode((constants.SCREEN_WIDTH, constants.SCREEN_HEIGHT))
@@ -66,8 +67,8 @@ while True:
             current_time = pygame.time.get_ticks()
             ball.x = constants.SCREEN_WIDTH / 2
             ball.y = constants.SCREEN_HEIGHT / 2
-            print_countdown(screen, start_time)  # Pass score_time to the function
-            if current_time - start_time >= 2100:
+            draw_countdown(screen, score_time)  # Pass score_time to the function
+            if current_time - score_time >= 2100:
                 count_flag = False  # Reset count_flag when countdown is done
         pygame.display.update()
 

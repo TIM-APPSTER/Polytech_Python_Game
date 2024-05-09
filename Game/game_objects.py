@@ -78,7 +78,8 @@ def draw_dotted_line(screen, line_color):
         pygame.draw.line(screen, line_color, (x, start_y), (x + segment_length, start_y), 2)
 
 
-def print_countdown(screen, score_time):
+def draw_countdown(screen, score_time):
+    pygame.init()
     current_time = pygame.time.get_ticks()
     time_elapsed = current_time - score_time
 
@@ -91,7 +92,7 @@ def print_countdown(screen, score_time):
     else:
         return  # Countdown finished
 
-    countdown_text = pygame.font.SysFont('Materials/Roboto-Light.ttf', 200).render(str(number), False, 'white', 'black')
+    countdown_text = constants.BASIC_FONT.render(str(number), True, 'white', 'black')
     text_rect = countdown_text.get_rect()
     text_rect.center = (constants.SCREEN_WIDTH / 2, constants.SCREEN_HEIGHT / 2)
     screen.blit(countdown_text, text_rect)
